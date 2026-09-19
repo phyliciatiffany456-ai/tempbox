@@ -25,7 +25,11 @@ class _RetrievalScreenState extends State<RetrievalScreen> {
   int _rating = 5;
   final _feedbackController = TextEditingController();
   bool _isFinalizing = false;
-  final _currency = NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0);
+  final _currency = NumberFormat.currency(
+    locale: 'id_ID',
+    symbol: 'Rp ',
+    decimalDigits: 0,
+  );
 
   @override
   void dispose() {
@@ -64,9 +68,20 @@ class _RetrievalScreenState extends State<RetrievalScreen> {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         title: const Row(
           children: [
-            Icon(Icons.check_circle_rounded, color: AppColors.success, size: 26),
+            Icon(
+              Icons.check_circle_rounded,
+              color: AppColors.success,
+              size: 26,
+            ),
             SizedBox(width: 8),
-            Text('Sewa Selesai', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17, color: AppColors.textPrimary)),
+            Text(
+              'Sewa Selesai',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 17,
+                color: AppColors.textPrimary,
+              ),
+            ),
           ],
         ),
         content: Column(
@@ -75,7 +90,11 @@ class _RetrievalScreenState extends State<RetrievalScreen> {
           children: [
             Text(
               'Terima kasih telah menggunakan TEMPBOX. Kompartemen ${widget.reservation.compartment.id} telah ditutup dan siap untuk pengguna berikutnya.',
-              style: const TextStyle(fontSize: 13, color: AppColors.textSecondary, height: 1.4),
+              style: const TextStyle(
+                fontSize: 13,
+                color: AppColors.textSecondary,
+                height: 1.4,
+              ),
             ),
             if (widget.appState.isMember) ...[
               const SizedBox(height: 12),
@@ -87,7 +106,11 @@ class _RetrievalScreenState extends State<RetrievalScreen> {
                 ),
                 child: Row(
                   children: [
-                    const Icon(Icons.stars_rounded, color: AppColors.brandYellow, size: 20),
+                    const Icon(
+                      Icons.stars_rounded,
+                      color: AppColors.brandYellow,
+                      size: 20,
+                    ),
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
@@ -111,7 +134,8 @@ class _RetrievalScreenState extends State<RetrievalScreen> {
               Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => MainNavigationScreen(appState: widget.appState),
+                  builder: (context) =>
+                      MainNavigationScreen(appState: widget.appState),
                 ),
                 (route) => false,
               );
@@ -131,9 +155,7 @@ class _RetrievalScreenState extends State<RetrievalScreen> {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: const Text('Pengambilan Barang'),
-      ),
+      appBar: AppBar(title: const Text('Pengambilan Barang')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
         child: Column(
@@ -167,11 +189,19 @@ class _RetrievalScreenState extends State<RetrievalScreen> {
                       children: [
                         Text(
                           res.location.name,
-                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: AppColors.textPrimary),
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 13,
+                            color: AppColors.textPrimary,
+                          ),
                         ),
                         Text(
                           'Kompartemen ${res.compartment.id} (${res.storageType.title})',
-                          style: TextStyle(fontSize: 12, color: accentColor, fontWeight: FontWeight.bold),
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: accentColor,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ],
                     ),
@@ -201,13 +231,20 @@ class _RetrievalScreenState extends State<RetrievalScreen> {
                 children: [
                   const Text(
                     'Pindai QR / Masukkan PIN di Loker',
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.textPrimary,
+                    ),
                   ),
                   const SizedBox(height: 4),
                   const Text(
                     'Arahkan QR ke scanner unit untuk membuka kunci pintu kompartemen.',
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 11, color: AppColors.textSecondary),
+                    style: TextStyle(
+                      fontSize: 11,
+                      color: AppColors.textSecondary,
+                    ),
                   ),
                   const SizedBox(height: 14),
                   Container(
@@ -224,7 +261,10 @@ class _RetrievalScreenState extends State<RetrievalScreen> {
                   ),
                   const SizedBox(height: 12),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 14,
+                      vertical: 6,
+                    ),
                     decoration: BoxDecoration(
                       color: AppColors.surfaceElevated,
                       borderRadius: BorderRadius.circular(8),
@@ -234,7 +274,10 @@ class _RetrievalScreenState extends State<RetrievalScreen> {
                       children: [
                         const Text(
                           'PIN Akses: ',
-                          style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: AppColors.textSecondary,
+                          ),
                         ),
                         Text(
                           res.pinCode,
@@ -268,7 +311,11 @@ class _RetrievalScreenState extends State<RetrievalScreen> {
                 onChanged: (val) => setState(() => _isItemTaken = val ?? false),
                 title: const Text(
                   'Saya telah mengambil seluruh barang bawaan saya dari loker.',
-                  style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: AppColors.textPrimary),
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.textPrimary,
+                  ),
                 ),
               ),
             ),
@@ -277,7 +324,11 @@ class _RetrievalScreenState extends State<RetrievalScreen> {
             // Rating
             const Text(
               'Bagaimana pengalaman Anda?',
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: AppColors.textPrimary,
+              ),
             ),
             const SizedBox(height: 8),
             Row(
@@ -287,7 +338,9 @@ class _RetrievalScreenState extends State<RetrievalScreen> {
                 return IconButton(
                   onPressed: () => setState(() => _rating = starNum),
                   icon: Icon(
-                    starNum <= _rating ? Icons.star_rounded : Icons.star_outline_rounded,
+                    starNum <= _rating
+                        ? Icons.star_rounded
+                        : Icons.star_outline_rounded,
                     color: AppColors.brandYellow,
                     size: 34,
                   ),
@@ -298,13 +351,22 @@ class _RetrievalScreenState extends State<RetrievalScreen> {
 
             TextField(
               controller: _feedbackController,
-              style: const TextStyle(color: AppColors.textPrimary, fontSize: 13),
+              style: const TextStyle(
+                color: AppColors.textPrimary,
+                fontSize: 13,
+              ),
               decoration: InputDecoration(
                 hintText: 'Tulis ulasan singkat Anda (opsional)...',
-                hintStyle: const TextStyle(color: AppColors.textMuted, fontSize: 13),
+                hintStyle: const TextStyle(
+                  color: AppColors.textMuted,
+                  fontSize: 13,
+                ),
                 filled: true,
                 fillColor: AppColors.surfaceElevated,
-                contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                contentPadding: const EdgeInsets.symmetric(
+                  horizontal: 14,
+                  vertical: 12,
+                ),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
                   borderSide: BorderSide.none,
@@ -324,14 +386,28 @@ class _RetrievalScreenState extends State<RetrievalScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Ringkasan Transaksi', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: AppColors.textPrimary)),
+                  const Text(
+                    'Ringkasan Transaksi',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 13,
+                      color: AppColors.textPrimary,
+                    ),
+                  ),
                   const SizedBox(height: 8),
                   _buildReceiptRow('No. Transaksi', res.reservationCode),
                   _buildReceiptRow('Metode Pembayaran', res.paymentMethod),
                   _buildReceiptRow('Durasi Total', '${res.durationHours} Jam'),
-                  _buildReceiptRow('Total Pembayaran', _currency.format(res.totalAmount)),
+                  _buildReceiptRow(
+                    'Total Pembayaran',
+                    _currency.format(res.totalAmount),
+                  ),
                   if (widget.appState.isMember) ...[
-                    _buildReceiptRow('Poin Diperoleh', '+${res.pointsEarned} Poin', color: AppColors.brandYellow),
+                    _buildReceiptRow(
+                      'Poin Diperoleh',
+                      '+${res.pointsEarned} Poin',
+                      color: AppColors.brandYellow,
+                    ),
                   ],
                 ],
               ),
@@ -347,17 +423,25 @@ class _RetrievalScreenState extends State<RetrievalScreen> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.coldAccent,
                   foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14),
+                  ),
                 ),
                 child: _isFinalizing
                     ? const SizedBox(
                         width: 20,
                         height: 20,
-                        child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: Colors.white,
+                        ),
                       )
                     : const Text(
                         'Konfirmasi & Selesaikan Sewa',
-                        style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
               ),
             ),
@@ -368,14 +452,31 @@ class _RetrievalScreenState extends State<RetrievalScreen> {
     );
   }
 
-  Widget _buildReceiptRow(String title, String val, {Color color = AppColors.textPrimary}) {
+  Widget _buildReceiptRow(
+    String title,
+    String val, {
+    Color color = AppColors.textPrimary,
+  }) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 5.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(title, style: const TextStyle(fontSize: 12, color: AppColors.textSecondary)),
-          Text(val, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: color)),
+          Text(
+            title,
+            style: const TextStyle(
+              fontSize: 12,
+              color: AppColors.textSecondary,
+            ),
+          ),
+          Text(
+            val,
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+              color: color,
+            ),
+          ),
         ],
       ),
     );

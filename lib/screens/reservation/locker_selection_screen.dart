@@ -5,6 +5,7 @@ import "../../models/locker_model.dart";
 import "../../services/app_state.dart";
 import "../../theme/app_theme.dart";
 import "../../widgets/compartment_box.dart";
+import "../../widgets/horizontal_choice_chip_scroller.dart";
 import "payment_screen.dart";
 
 class LockerSelectionScreen extends StatefulWidget {
@@ -20,7 +21,11 @@ class _LockerSelectionScreenState extends State<LockerSelectionScreen> {
   late StorageType _storageType;
   late int _durationHours;
   Compartment? _selectedCompartment;
-  final _currency = NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0);
+  final _currency = NumberFormat.currency(
+    locale: 'id_ID',
+    symbol: 'Rp ',
+    decimalDigits: 0,
+  );
 
   @override
   void initState() {
@@ -28,7 +33,10 @@ class _LockerSelectionScreenState extends State<LockerSelectionScreen> {
     _storageType = widget.appState.selectedStorageType;
     _durationHours = widget.appState.selectedDurationHours;
     final comps = widget.appState.getCompartmentsForSelection();
-    _selectedCompartment = comps.firstWhere((c) => c.isAvailable, orElse: () => comps[0]);
+    _selectedCompartment = comps.firstWhere(
+      (c) => c.isAvailable,
+      orElse: () => comps[0],
+    );
     widget.appState.selectedCompartment = _selectedCompartment;
   }
 
@@ -37,14 +45,18 @@ class _LockerSelectionScreenState extends State<LockerSelectionScreen> {
       _storageType = type;
       widget.appState.selectedStorageType = type;
       final comps = widget.appState.getCompartmentsForSelection();
-      _selectedCompartment = comps.firstWhere((c) => c.isAvailable, orElse: () => comps[0]);
+      _selectedCompartment = comps.firstWhere(
+        (c) => c.isAvailable,
+        orElse: () => comps[0],
+      );
       widget.appState.selectedCompartment = _selectedCompartment;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final location = widget.appState.selectedLocation ?? widget.appState.locations[0];
+    final location =
+        widget.appState.selectedLocation ?? widget.appState.locations[0];
     final compartments = widget.appState.getCompartmentsForSelection();
     final now = DateTime.now();
     final pricing = widget.appState.calculatePricing(
@@ -58,9 +70,7 @@ class _LockerSelectionScreenState extends State<LockerSelectionScreen> {
 
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: const Text('Pilih Loker'),
-      ),
+      appBar: AppBar(title: const Text('Pilih Loker')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 12.0),
         child: Column(
@@ -75,7 +85,11 @@ class _LockerSelectionScreenState extends State<LockerSelectionScreen> {
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.location_on_rounded, color: AppColors.coldAccent, size: 20),
+                  const Icon(
+                    Icons.location_on_rounded,
+                    color: AppColors.coldAccent,
+                    size: 20,
+                  ),
                   const SizedBox(width: 8),
                   Expanded(
                     child: Column(
@@ -83,13 +97,20 @@ class _LockerSelectionScreenState extends State<LockerSelectionScreen> {
                       children: [
                         Text(
                           location.name,
-                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13, color: AppColors.textPrimary),
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 13,
+                            color: AppColors.textPrimary,
+                          ),
                         ),
                         Text(
                           location.address,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(fontSize: 11, color: AppColors.textSecondary),
+                          style: const TextStyle(
+                            fontSize: 11,
+                            color: AppColors.textSecondary,
+                          ),
                         ),
                       ],
                     ),
@@ -97,12 +118,19 @@ class _LockerSelectionScreenState extends State<LockerSelectionScreen> {
                   const SizedBox(width: 8),
                   IconButton(
                     tooltip: 'Buka di Google Maps',
-                    icon: const Icon(Icons.directions_rounded, color: Color(0xFFDC2626), size: 22),
+                    icon: const Icon(
+                      Icons.directions_rounded,
+                      color: Color(0xFFDC2626),
+                      size: 22,
+                    ),
                     onPressed: () async {
                       final url = Uri.parse(location.googleMapsUrl);
                       try {
                         if (await canLaunchUrl(url)) {
-                          await launchUrl(url, mode: LaunchMode.externalApplication);
+                          await launchUrl(
+                            url,
+                            mode: LaunchMode.externalApplication,
+                          );
                         }
                       } catch (e) {
                         debugPrint("Error opening GMaps: $e");
@@ -117,7 +145,11 @@ class _LockerSelectionScreenState extends State<LockerSelectionScreen> {
             // Storage Mode Toggle (Hot vs Cold)
             const Text(
               'Tipe Penyimpanan',
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: AppColors.textPrimary,
+              ),
             ),
             const SizedBox(height: 10),
             Row(
@@ -153,11 +185,19 @@ class _LockerSelectionScreenState extends State<LockerSelectionScreen> {
               children: [
                 const Text(
                   'Nomor Kompartemen',
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.textPrimary,
+                  ),
                 ),
                 Text(
                   '${isHot ? location.availableHot : location.availableCold} dari 6 Tersedia',
-                  style: TextStyle(fontSize: 12, color: accentColor, fontWeight: FontWeight.w600),
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: accentColor,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ],
             ),
@@ -194,41 +234,37 @@ class _LockerSelectionScreenState extends State<LockerSelectionScreen> {
             // Duration Selector
             const Text(
               'Durasi Sewa',
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: AppColors.textPrimary,
+              ),
             ),
             const SizedBox(height: 8),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  ...[1, 2, 3, 4, 6, 8, 12, 24].map((hours) {
-                    final isSel = _durationHours == hours;
-                    return Padding(
-                      padding: const EdgeInsets.only(right: 8.0),
-                      child: ChoiceChip(
-                        label: Text('$hours Jam'),
-                        selected: isSel,
-                        onSelected: (val) {
-                          setState(() {
-                            _durationHours = hours;
-                            widget.appState.selectedDurationHours = hours;
-                          });
-                        },
-                        selectedColor: accentColor,
-                        backgroundColor: AppColors.surfaceElevated,
-                        labelStyle: TextStyle(
-                          color: isSel ? Colors.white : AppColors.textSecondary,
-                          fontWeight: isSel ? FontWeight.bold : FontWeight.normal,
-                          fontSize: 12,
-                        ),
-                        side: BorderSide(
-                          color: isSel ? accentColor : AppColors.border,
-                        ),
-                      ),
-                    );
-                  }),
-                ],
-              ),
+            HorizontalChoiceChipScroller(
+              children: [1, 2, 3, 4, 6, 8, 12, 24].map((hours) {
+                final isSel = _durationHours == hours;
+                return ChoiceChip(
+                  label: Text('$hours Jam'),
+                  selected: isSel,
+                  onSelected: (val) {
+                    setState(() {
+                      _durationHours = hours;
+                      widget.appState.selectedDurationHours = hours;
+                    });
+                  },
+                  selectedColor: accentColor,
+                  backgroundColor: AppColors.surfaceElevated,
+                  labelStyle: TextStyle(
+                    color: isSel ? Colors.white : AppColors.textSecondary,
+                    fontWeight: isSel ? FontWeight.bold : FontWeight.normal,
+                    fontSize: 12,
+                  ),
+                  side: BorderSide(
+                    color: isSel ? accentColor : AppColors.border,
+                  ),
+                );
+              }).toList(),
             ),
             const SizedBox(height: 10),
             // Custom Duration Stepper
@@ -241,32 +277,47 @@ class _LockerSelectionScreenState extends State<LockerSelectionScreen> {
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.tune_rounded, size: 16, color: AppColors.textSecondary),
+                  const Icon(
+                    Icons.tune_rounded,
+                    size: 16,
+                    color: AppColors.textSecondary,
+                  ),
                   const SizedBox(width: 6),
                   const Expanded(
                     child: Text(
                       'Durasi Kustom:',
-                      style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: AppColors.textPrimary),
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.textPrimary,
+                      ),
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   IconButton(
                     constraints: const BoxConstraints(),
                     padding: const EdgeInsets.all(4),
-                    icon: const Icon(Icons.remove_circle_outline_rounded, size: 22),
+                    icon: const Icon(
+                      Icons.remove_circle_outline_rounded,
+                      size: 22,
+                    ),
                     color: AppColors.textPrimary,
                     onPressed: _durationHours > 1
                         ? () {
                             setState(() {
                               _durationHours--;
-                              widget.appState.selectedDurationHours = _durationHours;
+                              widget.appState.selectedDurationHours =
+                                  _durationHours;
                             });
                           }
                         : null,
                   ),
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 6),
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 4,
+                    ),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(8),
@@ -284,7 +335,10 @@ class _LockerSelectionScreenState extends State<LockerSelectionScreen> {
                   IconButton(
                     constraints: const BoxConstraints(),
                     padding: const EdgeInsets.all(4),
-                    icon: const Icon(Icons.add_circle_outline_rounded, size: 22),
+                    icon: const Icon(
+                      Icons.add_circle_outline_rounded,
+                      size: 22,
+                    ),
                     color: AppColors.textPrimary,
                     onPressed: () {
                       setState(() {
@@ -318,12 +372,22 @@ class _LockerSelectionScreenState extends State<LockerSelectionScreen> {
                 children: [
                   const Text(
                     'Rincian Biaya',
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.textPrimary,
+                    ),
                   ),
                   const SizedBox(height: 10),
-                  _buildPriceRow('Tarif Sewa', '${_currency.format(pricing["hourlyRate"])} / jam'),
+                  _buildPriceRow(
+                    'Tarif Sewa',
+                    '${_currency.format(pricing["hourlyRate"])} / jam',
+                  ),
                   _buildPriceRow('Durasi', '$_durationHours Jam'),
-                  _buildPriceRow('Subtotal', _currency.format(pricing["subtotal"])),
+                  _buildPriceRow(
+                    'Subtotal',
+                    _currency.format(pricing["subtotal"]),
+                  ),
                   if (widget.appState.isMember) ...[
                     _buildPriceRow(
                       'Diskon Member (10%)',
@@ -340,7 +404,11 @@ class _LockerSelectionScreenState extends State<LockerSelectionScreen> {
                     children: [
                       const Text(
                         'Total',
-                        style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.textPrimary,
+                        ),
                       ),
                       Text(
                         _currency.format(pricing["total"]),
@@ -377,13 +445,16 @@ class _LockerSelectionScreenState extends State<LockerSelectionScreen> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => PaymentScreen(appState: widget.appState),
+                      builder: (context) =>
+                          PaymentScreen(appState: widget.appState),
                     ),
                   );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: accentColor,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14),
+                  ),
                 ),
                 child: const Text(
                   'Lanjut ke Pembayaran',
@@ -451,7 +522,10 @@ class _LockerSelectionScreenState extends State<LockerSelectionScreen> {
             const SizedBox(height: 2),
             Text(
               desc,
-              style: const TextStyle(fontSize: 10, color: AppColors.textSecondary),
+              style: const TextStyle(
+                fontSize: 10,
+                color: AppColors.textSecondary,
+              ),
             ),
           ],
         ),
@@ -459,14 +533,31 @@ class _LockerSelectionScreenState extends State<LockerSelectionScreen> {
     );
   }
 
-  Widget _buildPriceRow(String label, String value, {Color textColor = AppColors.textSecondary}) {
+  Widget _buildPriceRow(
+    String label,
+    String value, {
+    Color textColor = AppColors.textSecondary,
+  }) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 4),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: const TextStyle(fontSize: 12, color: AppColors.textSecondary)),
-          Text(value, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: textColor)),
+          Text(
+            label,
+            style: const TextStyle(
+              fontSize: 12,
+              color: AppColors.textSecondary,
+            ),
+          ),
+          Text(
+            value,
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+              color: textColor,
+            ),
+          ),
         ],
       ),
     );

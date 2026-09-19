@@ -1,11 +1,11 @@
 {
-    "name": "tempbox_app",
-    "short_name": "tempbox_app",
+    "name": "TEMPBOX",
+    "short_name": "TEMPBOX",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "Smart & Sustainable Thermal Storage.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [
