@@ -3,6 +3,7 @@ import "package:url_launcher/url_launcher.dart";
 import "../../models/locker_model.dart";
 import "../../services/app_state.dart";
 import "../../theme/app_theme.dart";
+import "../../widgets/horizontal_choice_chip_scroller.dart";
 import "../../widgets/map/interactive_gmap.dart";
 import "locker_selection_screen.dart";
 
@@ -36,7 +37,9 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
   }
 
   Future<void> _openGoogleMaps(double lat, double lng) async {
-    final url = Uri.parse('https://www.google.com/maps/search/?api=1&query=$lat,$lng');
+    final url = Uri.parse(
+      'https://www.google.com/maps/search/?api=1&query=$lat,$lng',
+    );
     try {
       if (await canLaunchUrl(url)) {
         await launchUrl(url, mode: LaunchMode.externalApplication);
@@ -51,9 +54,11 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
   @override
   Widget build(BuildContext context) {
     final filteredLocations = widget.appState.locations.where((loc) {
-      final matchesCategory = _selectedCategory == 'Semua' ||
+      final matchesCategory =
+          _selectedCategory == 'Semua' ||
           loc.category.toLowerCase().contains(_selectedCategory.toLowerCase());
-      final matchesQuery = loc.name.toLowerCase().contains(_searchQuery.toLowerCase()) ||
+      final matchesQuery =
+          loc.name.toLowerCase().contains(_searchQuery.toLowerCase()) ||
           loc.address.toLowerCase().contains(_searchQuery.toLowerCase());
       return matchesCategory && matchesQuery;
     }).toList();
@@ -65,7 +70,9 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
         actions: [
           IconButton(
             tooltip: _isMapView ? 'Lihat Daftar' : 'Lihat Peta (GMaps)',
-            icon: Icon(_isMapView ? Icons.view_list_rounded : Icons.map_rounded),
+            icon: Icon(
+              _isMapView ? Icons.view_list_rounded : Icons.map_rounded,
+            ),
             onPressed: () => setState(() => _isMapView = !_isMapView),
           ),
         ],
@@ -74,7 +81,10 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
         children: [
           // View Mode Switcher Header
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16.0,
+              vertical: 4.0,
+            ),
             child: Row(
               children: [
                 Expanded(
@@ -84,20 +94,30 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       decoration: BoxDecoration(
-                        color: !_isMapView ? AppColors.coldAccent : AppColors.surfaceElevated,
+                        color: !_isMapView
+                            ? AppColors.coldAccent
+                            : AppColors.surfaceElevated,
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.list_alt_rounded, size: 16, color: !_isMapView ? Colors.white : AppColors.textSecondary),
+                          Icon(
+                            Icons.list_alt_rounded,
+                            size: 16,
+                            color: !_isMapView
+                                ? Colors.white
+                                : AppColors.textSecondary,
+                          ),
                           const SizedBox(width: 6),
                           Text(
                             'Daftar Lokasi',
                             style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.bold,
-                              color: !_isMapView ? Colors.white : AppColors.textSecondary,
+                              color: !_isMapView
+                                  ? Colors.white
+                                  : AppColors.textSecondary,
                             ),
                           ),
                         ],
@@ -113,20 +133,30 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       decoration: BoxDecoration(
-                        color: _isMapView ? AppColors.coldAccent : AppColors.surfaceElevated,
+                        color: _isMapView
+                            ? AppColors.coldAccent
+                            : AppColors.surfaceElevated,
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.map_rounded, size: 16, color: _isMapView ? Colors.white : AppColors.textSecondary),
+                          Icon(
+                            Icons.map_rounded,
+                            size: 16,
+                            color: _isMapView
+                                ? Colors.white
+                                : AppColors.textSecondary,
+                          ),
                           const SizedBox(width: 6),
                           Text(
                             'Peta Interaktif (GMaps)',
                             style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.bold,
-                              color: _isMapView ? Colors.white : AppColors.textSecondary,
+                              color: _isMapView
+                                  ? Colors.white
+                                  : AppColors.textSecondary,
                             ),
                           ),
                         ],
@@ -141,23 +171,34 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
 
           // If Map View is active
           if (_isMapView) ...[
-            Expanded(
-              child: _buildMapVisualView(filteredLocations),
-            ),
+            Expanded(child: _buildMapVisualView(filteredLocations)),
           ] else ...[
             // Search box
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 4, 16, 10),
               child: TextField(
                 onChanged: (val) => setState(() => _searchQuery = val),
-                style: const TextStyle(color: AppColors.textPrimary, fontSize: 14),
+                style: const TextStyle(
+                  color: AppColors.textPrimary,
+                  fontSize: 14,
+                ),
                 decoration: InputDecoration(
                   hintText: 'Cari lokasi wisata, camping, mall...',
-                  hintStyle: const TextStyle(color: AppColors.textMuted, fontSize: 13),
-                  prefixIcon: const Icon(Icons.search_rounded, color: AppColors.textSecondary, size: 20),
+                  hintStyle: const TextStyle(
+                    color: AppColors.textMuted,
+                    fontSize: 13,
+                  ),
+                  prefixIcon: const Icon(
+                    Icons.search_rounded,
+                    color: AppColors.textSecondary,
+                    size: 20,
+                  ),
                   filled: true,
                   fillColor: AppColors.surfaceElevated,
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 12,
+                  ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide.none,
@@ -167,40 +208,37 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
             ),
 
             // Category Chips
-            SizedBox(
+            HorizontalChoiceChipScroller(
               height: 36,
-              child: ListView.separated(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                scrollDirection: Axis.horizontal,
-                itemCount: _categories.length,
-                separatorBuilder: (context, i) => const SizedBox(width: 8),
-                itemBuilder: (context, i) {
-                  final cat = _categories[i];
-                  final isSel = cat == _selectedCategory;
-                  return ChoiceChip(
-                    label: Text(cat),
-                    selected: isSel,
-                    onSelected: (val) => setState(() => _selectedCategory = cat),
-                    selectedColor: AppColors.coldAccent,
-                    backgroundColor: AppColors.surfaceElevated,
-                    labelStyle: TextStyle(
-                      fontSize: 11,
-                      fontWeight: isSel ? FontWeight.bold : FontWeight.normal,
-                      color: isSel ? Colors.white : AppColors.textSecondary,
-                    ),
-                    side: BorderSide(
-                      color: isSel ? AppColors.coldAccent : AppColors.border,
-                    ),
-                  );
-                },
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              children: _categories.map((cat) {
+                final isSel = cat == _selectedCategory;
+                return ChoiceChip(
+                  label: Text(cat),
+                  selected: isSel,
+                  onSelected: (val) => setState(() => _selectedCategory = cat),
+                  selectedColor: AppColors.coldAccent,
+                  backgroundColor: AppColors.surfaceElevated,
+                  labelStyle: TextStyle(
+                    fontSize: 11,
+                    fontWeight: isSel ? FontWeight.bold : FontWeight.normal,
+                    color: isSel ? Colors.white : AppColors.textSecondary,
+                  ),
+                  side: BorderSide(
+                    color: isSel ? AppColors.coldAccent : AppColors.border,
+                  ),
+                );
+              }).toList(),
             ),
             const SizedBox(height: 10),
 
             // Locations list
             Expanded(
               child: ListView.separated(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 6,
+                ),
                 itemCount: filteredLocations.length,
                 separatorBuilder: (context, i) => const SizedBox(height: 10),
                 itemBuilder: (context, i) {
@@ -221,50 +259,44 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
     return Column(
       children: [
         // Quick Hub Selector Chips
-        Container(
+        HorizontalChoiceChipScroller(
           height: 38,
-          margin: const EdgeInsets.symmetric(horizontal: 16),
-          child: ListView.separated(
-            scrollDirection: Axis.horizontal,
-            itemCount: locations.length,
-            separatorBuilder: (context, i) => const SizedBox(width: 8),
-            itemBuilder: (context, i) {
-              final loc = locations[i];
-              final isSel = loc.id == sel.id;
-              final shortName = loc.name
-                  .replaceAll('TEMPBOX ', '')
-                  .replaceAll(' Hub', '');
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          children: locations.map((loc) {
+            final isSel = loc.id == sel.id;
+            final shortName = loc.name
+                .replaceAll('TEMPBOX ', '')
+                .replaceAll(' Hub', '');
 
-              return ChoiceChip(
-                label: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.location_on_rounded,
-                      size: 13,
-                      color: isSel ? Colors.white : const Color(0xFFEA4335),
-                    ),
-                    const SizedBox(width: 4),
-                    Text(shortName),
-                  ],
-                ),
-                selected: isSel,
-                onSelected: (val) {
-                  if (val) setState(() => _selectedMapLocation = loc);
-                },
-                selectedColor: AppColors.coldAccent,
-                backgroundColor: Colors.white,
-                labelStyle: TextStyle(
-                  fontSize: 11,
-                  fontWeight: isSel ? FontWeight.bold : FontWeight.normal,
-                  color: isSel ? Colors.white : AppColors.textPrimary,
-                ),
-                side: BorderSide(
-                  color: isSel ? AppColors.coldAccent : AppColors.border,
-                ),
-              );
-            },
-          ),
+            return ChoiceChip(
+              label: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.location_on_rounded,
+                    size: 13,
+                    color: isSel ? Colors.white : const Color(0xFFEA4335),
+                  ),
+                  const SizedBox(width: 4),
+                  Text(shortName),
+                ],
+              ),
+              selected: isSel,
+              onSelected: (val) {
+                if (val) setState(() => _selectedMapLocation = loc);
+              },
+              selectedColor: AppColors.coldAccent,
+              backgroundColor: Colors.white,
+              labelStyle: TextStyle(
+                fontSize: 11,
+                fontWeight: isSel ? FontWeight.bold : FontWeight.normal,
+                color: isSel ? Colors.white : AppColors.textPrimary,
+              ),
+              side: BorderSide(
+                color: isSel ? AppColors.coldAccent : AppColors.border,
+              ),
+            );
+          }).toList(),
         ),
         const SizedBox(height: 10),
 
@@ -276,7 +308,11 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
               borderRadius: BorderRadius.circular(16),
               border: Border.all(color: AppColors.border),
               boxShadow: const [
-                BoxShadow(color: Color(0x0A000000), blurRadius: 8, offset: Offset(0, 2)),
+                BoxShadow(
+                  color: Color(0x0A000000),
+                  blurRadius: 8,
+                  offset: Offset(0, 2),
+                ),
               ],
             ),
             child: buildInteractiveGMap(
@@ -299,7 +335,11 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
             borderRadius: BorderRadius.circular(16),
             border: Border.all(color: AppColors.border),
             boxShadow: const [
-              BoxShadow(color: Color(0x0A000000), blurRadius: 10, offset: Offset(0, 2)),
+              BoxShadow(
+                color: Color(0x0A000000),
+                blurRadius: 10,
+                offset: Offset(0, 2),
+              ),
             ],
           ),
           child: Column(
@@ -314,28 +354,41 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
                       children: [
                         Text(
                           sel.name,
-                          style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+                          style: const TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.textPrimary,
+                          ),
                         ),
                         const SizedBox(height: 2),
                         Text(
                           sel.address,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(fontSize: 11, color: AppColors.textSecondary),
+                          style: const TextStyle(
+                            fontSize: 11,
+                            color: AppColors.textSecondary,
+                          ),
                         ),
                       ],
                     ),
                   ),
                   const SizedBox(width: 8),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 4,
+                    ),
                     decoration: BoxDecoration(
                       color: AppColors.surfaceElevated,
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(
                       '${sel.distanceKm} km',
-                      style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ],
@@ -346,15 +399,26 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
                   // Button 1: Open Google Maps
                   Expanded(
                     child: OutlinedButton.icon(
-                      onPressed: () => _openGoogleMaps(sel.latitude, sel.longitude),
-                      icon: const Icon(Icons.directions_rounded, size: 16, color: Color(0xFFDC2626)),
+                      onPressed: () =>
+                          _openGoogleMaps(sel.latitude, sel.longitude),
+                      icon: const Icon(
+                        Icons.directions_rounded,
+                        size: 16,
+                        color: Color(0xFFDC2626),
+                      ),
                       label: const Text(
                         'Google Maps',
-                        style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.textPrimary,
+                        ),
                       ),
                       style: OutlinedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 10),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
                       ),
                     ),
                   ),
@@ -367,18 +431,25 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => LockerSelectionScreen(appState: widget.appState),
+                            builder: (context) => LockerSelectionScreen(
+                              appState: widget.appState,
+                            ),
                           ),
                         );
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.coldAccent,
                         padding: const EdgeInsets.symmetric(vertical: 10),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
                       ),
                       child: const Text(
                         'Pilih Loker Ini',
-                        style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),
@@ -453,7 +524,10 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
                 ),
                 const SizedBox(width: 8),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 3,
+                  ),
                   decoration: BoxDecoration(
                     color: AppColors.surfaceElevated,
                     borderRadius: BorderRadius.circular(6),
@@ -474,7 +548,11 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
               loc.address,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
-              style: const TextStyle(fontSize: 11, color: AppColors.textSecondary, height: 1.3),
+              style: const TextStyle(
+                fontSize: 11,
+                color: AppColors.textSecondary,
+                height: 1.3,
+              ),
             ),
             const SizedBox(height: 10),
             const Divider(color: AppColors.border, height: 1),
@@ -484,9 +562,15 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
               children: [
                 Row(
                   children: [
-                    _buildSlotBadge('${loc.availableHot} Hot', AppColors.hotAccent),
+                    _buildSlotBadge(
+                      '${loc.availableHot} Hot',
+                      AppColors.hotAccent,
+                    ),
                     const SizedBox(width: 6),
-                    _buildSlotBadge('${loc.availableCold} Cold', AppColors.coldAccent),
+                    _buildSlotBadge(
+                      '${loc.availableCold} Cold',
+                      AppColors.coldAccent,
+                    ),
                   ],
                 ),
                 Row(
@@ -496,18 +580,29 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
                       onTap: () => _openGoogleMaps(loc.latitude, loc.longitude),
                       borderRadius: BorderRadius.circular(8),
                       child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 8,
+                          vertical: 5,
+                        ),
                         decoration: BoxDecoration(
                           color: const Color(0xFFFEE2E2),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: const Row(
                           children: [
-                            Icon(Icons.directions_rounded, size: 14, color: Color(0xFFDC2626)),
+                            Icon(
+                              Icons.directions_rounded,
+                              size: 14,
+                              color: Color(0xFFDC2626),
+                            ),
                             SizedBox(width: 4),
                             Text(
                               'Maps',
-                              style: TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Color(0xFFDC2626)),
+                              style: TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFFDC2626),
+                              ),
                             ),
                           ],
                         ),
@@ -521,16 +616,29 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => LockerSelectionScreen(appState: widget.appState),
+                            builder: (context) => LockerSelectionScreen(
+                              appState: widget.appState,
+                            ),
                           ),
                         );
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.coldAccent,
-                        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 14,
+                          vertical: 8,
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
                       ),
-                      child: const Text('Pilih', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                      child: const Text(
+                        'Pilih',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -551,7 +659,11 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
       ),
       child: Text(
         text,
-        style: TextStyle(fontSize: 10, fontWeight: FontWeight.w600, color: color),
+        style: TextStyle(
+          fontSize: 10,
+          fontWeight: FontWeight.w600,
+          color: color,
+        ),
       ),
     );
   }

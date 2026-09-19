@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import '../models/locker_model.dart';
 import '../services/app_state.dart';
 import '../theme/app_theme.dart';
+import 'horizontal_choice_chip_scroller.dart';
 
 class ExtendRentalSheet extends StatefulWidget {
   final AppState appState;
@@ -14,12 +15,17 @@ class ExtendRentalSheet extends StatefulWidget {
     required this.reservation,
   });
 
-  static Future<void> show(BuildContext context, AppState appState, Reservation reservation) {
+  static Future<void> show(
+    BuildContext context,
+    AppState appState,
+    Reservation reservation,
+  ) {
     return showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (context) => ExtendRentalSheet(appState: appState, reservation: reservation),
+      builder: (context) =>
+          ExtendRentalSheet(appState: appState, reservation: reservation),
     );
   }
 
@@ -32,10 +38,19 @@ class _ExtendRentalSheetState extends State<ExtendRentalSheet> {
   bool _usePoints = false;
   String _selectedPaymentMethod = 'QRIS';
   bool _isSubmitting = false;
-  final _currency = NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0);
+  final _currency = NumberFormat.currency(
+    locale: 'id_ID',
+    symbol: 'Rp ',
+    decimalDigits: 0,
+  );
   final _timeFormat = DateFormat('HH:mm, dd MMM');
 
-  final List<String> _paymentMethods = ['QRIS', 'GoPay', 'BCA VA', 'Mandiri VA'];
+  final List<String> _paymentMethods = [
+    'QRIS',
+    'GoPay',
+    'BCA VA',
+    'Mandiri VA',
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +106,11 @@ class _ExtendRentalSheetState extends State<ExtendRentalSheet> {
                     color: accentColor.withOpacity(0.12),
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: Icon(Icons.update_rounded, color: accentColor, size: 22),
+                  child: Icon(
+                    Icons.update_rounded,
+                    color: accentColor,
+                    size: 22,
+                  ),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
@@ -100,11 +119,18 @@ class _ExtendRentalSheetState extends State<ExtendRentalSheet> {
                     children: [
                       const Text(
                         'Perpanjang Sewa Loker',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.textPrimary,
+                        ),
                       ),
                       Text(
                         'Kompartemen  • ',
-                        style: const TextStyle(fontSize: 12, color: AppColors.textSecondary),
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: AppColors.textSecondary,
+                        ),
                       ),
                     ],
                   ),
@@ -126,26 +152,50 @@ class _ExtendRentalSheetState extends State<ExtendRentalSheet> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text('Selesai Saat Ini', style: TextStyle(fontSize: 10, color: AppColors.textSecondary)),
+                        const Text(
+                          'Selesai Saat Ini',
+                          style: TextStyle(
+                            fontSize: 10,
+                            color: AppColors.textSecondary,
+                          ),
+                        ),
                         const SizedBox(height: 2),
                         Text(
                           _timeFormat.format(res.endTime),
-                          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: AppColors.textPrimary),
+                          style: const TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.textPrimary,
+                          ),
                         ),
                       ],
                     ),
                   ),
-                  const Icon(Icons.arrow_forward_rounded, color: AppColors.textSecondary, size: 16),
+                  const Icon(
+                    Icons.arrow_forward_rounded,
+                    color: AppColors.textSecondary,
+                    size: 16,
+                  ),
                   const SizedBox(width: 12),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        const Text('Selesai Baru', style: TextStyle(fontSize: 10, color: AppColors.textSecondary)),
+                        const Text(
+                          'Selesai Baru',
+                          style: TextStyle(
+                            fontSize: 10,
+                            color: AppColors.textSecondary,
+                          ),
+                        ),
                         const SizedBox(height: 2),
                         Text(
                           _timeFormat.format(newEndTime),
-                          style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: accentColor),
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            color: accentColor,
+                          ),
                         ),
                       ],
                     ),
@@ -158,53 +208,65 @@ class _ExtendRentalSheetState extends State<ExtendRentalSheet> {
             // Additional Hours Selector
             const Text(
               'Tambah Durasi',
-              style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+              style: TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.bold,
+                color: AppColors.textPrimary,
+              ),
             ),
             const SizedBox(height: 8),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [1, 2, 3, 4, 6, 8, 12, 24].map((h) {
-                  final isSel = _additionalHours == h;
-                  return Padding(
-                    padding: const EdgeInsets.only(right: 8.0),
-                    child: ChoiceChip(
-                      label: Text('+$h Jam'),
-                      selected: isSel,
-                      onSelected: (val) {
-                        if (val) setState(() => _additionalHours = h);
-                      },
-                      selectedColor: accentColor,
-                      backgroundColor: AppColors.surfaceElevated,
-                      labelStyle: TextStyle(
-                        color: isSel ? Colors.white : AppColors.textSecondary,
-                        fontWeight: isSel ? FontWeight.bold : FontWeight.normal,
-                        fontSize: 12,
-                      ),
-                      side: BorderSide(color: isSel ? accentColor : AppColors.border),
-                    ),
-                  );
-                }).toList(),
-              ),
+            HorizontalChoiceChipScroller(
+              children: [1, 2, 3, 4, 6, 8, 12, 24].map((h) {
+                final isSel = _additionalHours == h;
+                return ChoiceChip(
+                  label: Text('+$h Jam'),
+                  selected: isSel,
+                  onSelected: (val) {
+                    if (val) setState(() => _additionalHours = h);
+                  },
+                  selectedColor: accentColor,
+                  backgroundColor: AppColors.surfaceElevated,
+                  labelStyle: TextStyle(
+                    color: isSel ? Colors.white : AppColors.textSecondary,
+                    fontWeight: isSel ? FontWeight.bold : FontWeight.normal,
+                    fontSize: 12,
+                  ),
+                  side: BorderSide(
+                    color: isSel ? accentColor : AppColors.border,
+                  ),
+                );
+              }).toList(),
             ),
             const SizedBox(height: 10),
 
             // Custom hours stepper
             Row(
               children: [
-                const Text('Atur Kustom:', style: TextStyle(fontSize: 12, color: AppColors.textSecondary)),
+                const Text(
+                  'Atur Kustom:',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: AppColors.textSecondary,
+                  ),
+                ),
                 const Spacer(),
                 IconButton(
                   constraints: const BoxConstraints(),
                   padding: const EdgeInsets.all(4),
-                  icon: const Icon(Icons.remove_circle_outline_rounded, size: 22),
+                  icon: const Icon(
+                    Icons.remove_circle_outline_rounded,
+                    size: 22,
+                  ),
                   onPressed: _additionalHours > 1
                       ? () => setState(() => _additionalHours--)
                       : null,
                 ),
                 const SizedBox(width: 8),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
                     color: AppColors.surfaceElevated,
                     borderRadius: BorderRadius.circular(8),
@@ -212,7 +274,10 @@ class _ExtendRentalSheetState extends State<ExtendRentalSheet> {
                   ),
                   child: Text(
                     '$_additionalHours Jam',
-                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 13,
+                    ),
                   ),
                 ),
                 const SizedBox(width: 8),
@@ -229,7 +294,10 @@ class _ExtendRentalSheetState extends State<ExtendRentalSheet> {
             // Loyalty Points Option
             if (widget.appState.isMember && user.loyaltyPoints > 0) ...[
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 8,
+                ),
                 decoration: BoxDecoration(
                   color: const Color(0xFFFEF3C7),
                   borderRadius: BorderRadius.circular(10),
@@ -237,12 +305,20 @@ class _ExtendRentalSheetState extends State<ExtendRentalSheet> {
                 ),
                 child: Row(
                   children: [
-                    const Icon(Icons.stars_rounded, color: AppColors.brandYellow, size: 20),
+                    const Icon(
+                      Icons.stars_rounded,
+                      color: AppColors.brandYellow,
+                      size: 20,
+                    ),
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
                         'Gunakan ${user.loyaltyPoints} Poin Loyalty (-${_currency.format(user.loyaltyPoints)})',
-                        style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: Color(0xFF92400E)),
+                        style: const TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xFF92400E),
+                        ),
                       ),
                     ),
                     Switch(
@@ -259,33 +335,31 @@ class _ExtendRentalSheetState extends State<ExtendRentalSheet> {
             // Payment Method Quick Selection
             const Text(
               'Metode Pembayaran',
-              style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: AppColors.textPrimary),
+              style: TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.bold,
+                color: AppColors.textPrimary,
+              ),
             ),
             const SizedBox(height: 8),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: _paymentMethods.map((method) {
-                  final isSel = _selectedPaymentMethod == method;
-                  return Padding(
-                    padding: const EdgeInsets.only(right: 8.0),
-                    child: ChoiceChip(
-                      label: Text(method),
-                      selected: isSel,
-                      onSelected: (val) {
-                        if (val) setState(() => _selectedPaymentMethod = method);
-                      },
-                      selectedColor: AppColors.textPrimary,
-                      backgroundColor: AppColors.surfaceElevated,
-                      labelStyle: TextStyle(
-                        color: isSel ? Colors.white : AppColors.textSecondary,
-                        fontSize: 12,
-                        fontWeight: isSel ? FontWeight.bold : FontWeight.normal,
-                      ),
-                    ),
-                  );
-                }).toList(),
-              ),
+            HorizontalChoiceChipScroller(
+              children: _paymentMethods.map((method) {
+                final isSel = _selectedPaymentMethod == method;
+                return ChoiceChip(
+                  label: Text(method),
+                  selected: isSel,
+                  onSelected: (val) {
+                    if (val) setState(() => _selectedPaymentMethod = method);
+                  },
+                  selectedColor: AppColors.textPrimary,
+                  backgroundColor: AppColors.surfaceElevated,
+                  labelStyle: TextStyle(
+                    color: isSel ? Colors.white : AppColors.textSecondary,
+                    fontSize: 12,
+                    fontWeight: isSel ? FontWeight.bold : FontWeight.normal,
+                  ),
+                );
+              }).toList(),
             ),
             const SizedBox(height: 14),
 
@@ -301,17 +375,42 @@ class _ExtendRentalSheetState extends State<ExtendRentalSheet> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text('Biaya Tambahan', style: TextStyle(fontSize: 12, color: AppColors.textSecondary)),
-                      Text(_currency.format(pricing['subtotal']), style: const TextStyle(fontSize: 12, color: AppColors.textPrimary)),
+                      const Text(
+                        'Biaya Tambahan',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: AppColors.textSecondary,
+                        ),
+                      ),
+                      Text(
+                        _currency.format(pricing['subtotal']),
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: AppColors.textPrimary,
+                        ),
+                      ),
                     ],
                   ),
-                  if (widget.appState.isMember && (pricing['discount'] ?? 0) > 0) ...[
+                  if (widget.appState.isMember &&
+                      (pricing['discount'] ?? 0) > 0) ...[
                     const SizedBox(height: 4),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text('Diskon Member (10%)', style: TextStyle(fontSize: 12, color: AppColors.success)),
-                        Text('- ${_currency.format(pricing["discount"])}', style: const TextStyle(fontSize: 12, color: AppColors.success)),
+                        const Text(
+                          'Diskon Member (10%)',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: AppColors.success,
+                          ),
+                        ),
+                        Text(
+                          '- ${_currency.format(pricing["discount"])}',
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: AppColors.success,
+                          ),
+                        ),
                       ],
                     ),
                   ],
@@ -320,8 +419,20 @@ class _ExtendRentalSheetState extends State<ExtendRentalSheet> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text('Potongan Poin', style: TextStyle(fontSize: 12, color: AppColors.brandYellow)),
-                        Text('- ${_currency.format(pricing["pointsDiscount"])}', style: const TextStyle(fontSize: 12, color: AppColors.brandYellow)),
+                        const Text(
+                          'Potongan Poin',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: AppColors.brandYellow,
+                          ),
+                        ),
+                        Text(
+                          '- ${_currency.format(pricing["pointsDiscount"])}',
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: AppColors.brandYellow,
+                          ),
+                        ),
                       ],
                     ),
                   ],
@@ -329,10 +440,21 @@ class _ExtendRentalSheetState extends State<ExtendRentalSheet> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text('Total Pembayaran', style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: AppColors.textPrimary)),
+                      const Text(
+                        'Total Pembayaran',
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.textPrimary,
+                        ),
+                      ),
                       Text(
                         _currency.format(pricing['total']),
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: accentColor),
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: accentColor,
+                        ),
                       ),
                     ],
                   ),
@@ -368,12 +490,18 @@ class _ExtendRentalSheetState extends State<ExtendRentalSheet> {
                             behavior: SnackBarBehavior.floating,
                             content: Row(
                               children: [
-                                const Icon(Icons.check_circle_rounded, color: Colors.white, size: 18),
+                                const Icon(
+                                  Icons.check_circle_rounded,
+                                  color: Colors.white,
+                                  size: 18,
+                                ),
                                 const SizedBox(width: 8),
                                 Expanded(
                                   child: Text(
                                     'Sewa diperpanjang +$_additionalHours Jam hingga ${_timeFormat.format(newEndTime)}!',
-                                    style: const TextStyle(fontWeight: FontWeight.bold),
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ),
                               ],
@@ -383,17 +511,25 @@ class _ExtendRentalSheetState extends State<ExtendRentalSheet> {
                       },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: accentColor,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                 ),
                 child: _isSubmitting
                     ? const SizedBox(
                         width: 20,
                         height: 20,
-                        child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: Colors.white,
+                        ),
                       )
                     : Text(
                         'Konfirmasi & Bayar ${_currency.format(pricing["total"])}',
-                        style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
               ),
             ),
